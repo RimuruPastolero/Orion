@@ -1,0 +1,397 @@
+if game.PlayerId == 11729688377 then
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "✨TensuraHub Private✨",
+   LoadingTitle = "TensuraHub Private",
+   LoadingSubtitle = "by Rimuru",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = Tensura, -- Create a custom folder for your hub/game
+      FileName = "TensuraHub Private"
+   },
+   Discord = {
+      Enabled = true,
+      Invite = "https://discord.gg/vhfAQB7MkA", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "TensuraHub Private",
+      Subtitle = "Key System",
+      Note = "Join TensuraHub In Discord",
+      FileName = "TensuraHub Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"https://pastebin.com/raw/rKkysbvb"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local MainTab = Window:CreateTab("TensuraHub Private",nil)
+    local MainSection = MainTab:CreateSection("Main")
+
+    Rayfield:Notify({
+        Title = "You Executed TensuraHub Private",
+        Content = "TensuraHub Executed",
+        Duration = 5.,
+        Image = nil,
+        Actions = {
+            Ignore = {
+                Name = "TensuraHub!",
+                Callback = function()
+                    print("The user tapped Okay!")
+                end
+            }
+        },
+    })
+
+    local Button = MainTab:CreateButton({
+        Name = "AutoHit Ant",
+        Callback = function()
+            -- Function to find and hit all Ants in the game
+            local function findAndHitAnts()
+                -- Get the player's character and tools
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local hitTool = character:FindFirstChild("HitTool")
+            
+                -- Ensure the HitTool is equipped
+                if hitTool then
+                    -- Get all descendants of the Workspace
+                    local allDescendants = workspace:GetDescendants()
+            
+                    -- Loop through all descendants
+                    for _, descendant in pairs(allDescendants) do
+                        -- Check if the descendant is named "Ant"
+                        if descendant.Name == "Ant" then
+                            -- Check if the descendant is a model or part
+                            if descendant:IsA("Model") or descendant:IsA("BasePart") then
+                                -- Move the character close to the Ant
+                                character:SetPrimaryPartCFrame(descendant.CFrame)
+            
+                                -- Simulate hitting the Ant with the HitTool
+                                local tool = character:FindFirstChild("HitTool")
+                                if tool then
+                                    tool:Activate() -- Activates the tool (simulating a hit)
+                                end
+            
+                                wait(0.5) -- Wait a short time before moving to the next ant
+                            end
+                        end
+                    end
+                else
+                    print("crystal stick!")
+                end
+            end
+            
+            -- Call the function to find and hit all Ants
+            findAndHitAnts()
+        end,
+    })
+
+    local Slider = MainTab:CreateSlider({
+        Name = "Walkspeed",
+        Range = {0, 300},
+        Increment = 1,
+        Suffix = "speed",
+        CurrentValue = 16,
+        Flag = "Slider1",
+        Callback = function(Value)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+        end,
+    })
+
+    local Button2 = MainTab:CreateButton({
+        Name = "AutoHit Resources",
+        Callback = function()
+            -- Function to find and hit all resources in the game
+            local function findAndHitResources()
+                -- Get the player's character and tools
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local hitTool = character:FindFirstChild("PickaxeTool")
+            
+                -- Ensure the HitTool is equipped
+                if hitTool then
+                    -- Get all descendants of the Workspace
+                    local allDescendants = workspace:GetDescendants()
+            
+                    -- Loop through all descendants
+                    for _, descendant in pairs(allDescendants) do
+                        -- Check if the descendant is a resource (e.g., Rock, Tree, etc.)
+                        if descendant.Name == "Resource" then
+                            -- Check if the descendant is a model or part
+                            if descendant:IsA("Model") or descendant:IsA("BasePart") then
+                                -- Move the character close to the resource
+                                character:SetPrimaryPartCFrame(descendant.CFrame + Vector3.new(0, 3, 0)) -- Adjust position as needed
+            
+                                -- Simulate hitting the resource with the HitTool
+                                hitTool:Activate() -- Activates the tool (simulating a hit)
+            
+                                wait(1) -- Wait a short time to simulate hitting duration
+                            end
+                        end
+                    end
+                else
+                    print("PickaxeTool not found!")
+                end
+            end
+            
+            -- Call the function to find and hit all resources
+            findAndHitResources()
+        end,
+    })
+
+    -- Create other buttons here
+    local Button3 = MainTab:CreateButton({
+        Name = "Auto TweenGoldNodes",
+        Callback = function()
+            -- Function to find the closest gold node
+            local function findClosestGoldNode()
+                local goldNodes = {}  
+                local closestGoldNode = nil
+                local minDistance = math.huge  
+
+                -- Find all gold nodes in the workspace
+                for _, node in pairs(workspace:GetDescendants()) do
+                    if node.Name == "Gold" then
+                        table.insert(goldNodes, node)
+                    end
+                end
+
+                -- Iterate through all gold nodes to find the closest one
+                for _, goldNode in ipairs(goldNodes) do
+                    local distance = (character.HumanoidRootPart.Position - goldNode.Position).magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        closestGoldNode = goldNode
+                    end
+                end
+
+                return closestGoldNode
+            end
+        end,
+    })
+
+    local Button4 = MainTab:CreateButton({
+        Name = "Auto Plant",
+        Callback = function()
+            -- Define the fruits
+            local fruits = {
+                "bloodfruit",
+                "lemon",
+                "berry",
+                "jelly",
+                "apple",
+                "banana",
+                "strangefruit"
+            }
+
+            -- Function to add fruits
+            local function addFruits()
+                for _, fruit in ipairs(fruits) do
+                    game:GetService("ReplicatedStorage").Remotes.AddItems:FireServer(fruit, 1)
+                end
+            end
+            addFruits()
+        end,
+    })
+
+    local Button5 = MainTab:CreateButton({
+        Name = "Auto Harvest",
+        Callback = function()
+            -- Function to detect and harvest fruits
+            local function autoHarvest()
+                while true do
+                    wait(1) 
+
+                    for _, fruit in ipairs(workspace:GetChildren()) do
+                        if fruit:IsA("Model") and table.find(fruits, fruit.Name:lower()) then
+                            local distance = (fruit.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                            if distance <= 10 then 
+                                game:GetService("ReplicatedStorage").Remotes.Harvest:FireServer(fruit)
+                            end
+                        end
+                    end
+                end
+            end
+            autoHarvest()
+        end,
+    })
+
+    local Button6 = MainTab:CreateButton({
+        Name = "Tween PlantBoxes",
+        Callback = function()
+            -- Tween the plant box with blood
+            local blood = Instance.new("Part")
+            blood.Size = Vector3.new(1, 1, 1)
+            blood.Color = Color3.fromRGB(255, 0, 0) 
+            blood.Position = fruit.Position
+            blood.Parent = workspace
+            
+            -- Tween the blood
+            local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+            local tween = game:GetService("TweenService"):Create(blood, tweenInfo, {Size = Vector3.new(3, 3, 3), Transparency = 1})
+            tween:Play()
+            tween.Completed:Connect(function()
+                blood:Destroy()
+            end)
+        end,
+    })
+
+    local Button7 = MainTab:CreateButton({
+        Name = "LurkyBoi",
+        Callback = function()
+            -- Function to equip Golden Shark
+            local function equipGoldenShark()
+                local goldenShark = nil
+                for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                    if tool.Name == "GoldenShark" then
+                        goldenShark = tool
+                        break
+                    end
+                end
+                if not goldenShark then
+                    for _, tool in ipairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                        if tool.Name == "GoldenShark" then
+                            goldenShark = tool
+                            break
+                        end
+                    end
+                end
+                
+                if goldenShark then
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(goldenShark)
+                end
+            end
+
+            -- Function to farm gold nodes
+            local function farmGoldNodes()
+                while true do
+                    wait(1) 
+                    
+                    for _, node in ipairs(workspace:GetChildren()) do
+                        if node.Name == "GoldNode" then
+                            local distance = (node.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                            if distance <= 10 then 
+                                if not game.Players.LocalPlayer.Character:FindFirstChild("GoldenShark") then
+                                    equipGoldenShark()
+                                    wait(1) 
+                                end
+                                
+                                game.Players.LocalPlayer.Character:FindFirstChild("GoldenShark"):Activate()
+                            end
+                        end
+                    end
+                end
+            end
+            farmGoldNodes()
+        end,
+    })
+
+    local Button8 = MainTab:CreateButton({
+        Name = "Auto Eat",
+        Callback = function()
+            -- List of food items
+            local foods = {
+                "CookedMeat",
+                "CookedFish",
+                "Lemon",
+                "Bloodfruit",
+                "Berry"
+            }
+
+            -- Function to auto-eat food
+            local function autoEat()
+                while true do
+                    wait(1) 
+
+                    for _, foodName in ipairs(foods) do
+                        local food = game.Players.LocalPlayer.Backpack:FindFirstChild(foodName)
+                        if food then
+                            local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+                            if humanoid then
+                                local isHungry = humanoid.Health < humanoid.MaxHealth * 0.8 
+                                local isLowHealth = humanoid.Health < humanoid.MaxHealth * 0.5 
+                                if isHungry or isLowHealth then
+                                    food.Parent = game.Players.LocalPlayer.Character
+                                    game.Players.LocalPlayer.Character:FindFirstChild(foodName):Activate()
+                                    wait(1) 
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            autoEat()
+        end,
+    })
+end
+
+-- Improved AntiLag Drop Script for Booga Booga Reborn
+
+-- Settings
+local INITIAL_DROP_INTERVAL = 0.1 -- Initial time interval between drops (in seconds)
+local CHUNK_SIZE = 5 -- Number of items to drop per chunk
+local MIN_FRAME_RATE = 30 -- Minimum acceptable frame rate
+local MAX_DROP_INTERVAL = 1 -- Maximum interval to prevent excessive delays
+
+-- Function to drop an item
+local function dropItem(player, item)
+    -- Ensure the player and item are valid
+    if player and item and player.DropItem then
+        -- Replace with the game's specific drop function
+        player:DropItem(item)
+    end
+end
+
+-- Function to get current frame rate
+local function getCurrentFrameRate()
+    return workspace:GetRealPhysicsFPS()
+end
+
+-- Function to adjust drop interval based on frame rate
+local function adjustDropInterval(currentInterval)
+    local frameRate = getCurrentFrameRate()
+    if frameRate < MIN_FRAME_RATE then
+        return math.min(currentInterval + 0.05, MAX_DROP_INTERVAL) -- Increase interval if frame rate is low, up to MAX_DROP_INTERVAL
+    elseif frameRate > MIN_FRAME_RATE + 10 then
+        return math.max(currentInterval - 0.05, 0.05) -- Decrease interval if frame rate is high, but not below 0.05
+    else
+        return currentInterval
+    end
+end
+
+-- Function to drop items in chunks with adaptive delay
+local function dropItemsWithAntiLag(player, items)
+    local dropInterval = INITIAL_DROP_INTERVAL
+    local totalItems = #items
+    local chunkCount = math.ceil(totalItems / CHUNK_SIZE)
+
+    -- Create a coroutine to handle the dropping process
+    local function dropCoroutine()
+        for chunkIndex = 1, chunkCount do
+            for i = 1, CHUNK_SIZE do
+                local itemIndex = (chunkIndex - 1) * CHUNK_SIZE + i
+                if itemIndex > totalItems then break end
+                dropItem(player, items[itemIndex])
+            end
+            dropInterval = adjustDropInterval(dropInterval)
+            wait(dropInterval) -- Adaptive wait to prevent lag
+        end
+    end
+
+    -- Start the coroutine
+    coroutine.wrap(dropCoroutine)()
+end
+
+-- Example usage:
+-- Assuming `player` is the player dropping the items and `items` is a list of items to drop
+local player = game.Players.LocalPlayer
+local itemsToDrop = {"Item1", "Item2", "Item3", "Item4", "Item5", "Item6", "Item7", "Item8", "Item9", "Item10"} -- Replace with actual item references
+
+-- Drop items with anti-lag mechanism
+dropItemsWithAntiLag(player, itemsToDrop)
+end
+end
